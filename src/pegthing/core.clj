@@ -42,6 +42,7 @@
     board))
 
 (defn connect-right
+  "Form connection to the right of a given position"
   [board max-pos pos]
   (let [neighbor (inc pos)
         destination (inc neighbor)]
@@ -50,6 +51,7 @@
       board)))
 
 (defn connect-down-left
+  "Form connection to down and left of a given position"
   [board max-pos pos]
   (let [row (row-num pos)
         neighbor (+ row pos)
@@ -57,6 +59,7 @@
     (connect board max-pos pos neighbor destination)))
 
 (defn connect-down-right
+  "Form connection to down and right of a given position"
   [board max-pos pos]
   (let [row (row-num pos)
         neighbor (+ 1 row pos)
