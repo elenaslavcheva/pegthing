@@ -208,7 +208,7 @@
        default
        (clojure.string/lower-case input)))))
 
-(defn characters-as-string
+(defn characters-as-strings
   "Given a string, return a collection consisting of each individual character"
   [string]
   (re-seq #"[a-zA-Z]" string))
@@ -231,7 +231,7 @@
   (println "\nHere's your board:")
   (print-board board)
   (println "Move from where to where? Enter two letters:")
-  (let [input (map letter->pos (characters-as-string (get-input)))]
+  (let [input (map letter->pos (characters-as-strings (get-input)))]
     (if-let [new-board (make-move board (first input) (second input))]
       (user-entered-valid-move new-board)
       (user-entered-invalid-move board))))
