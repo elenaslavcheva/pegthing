@@ -237,7 +237,7 @@
 (defn prompt-rows
   "Ask how many rows the new board have"
   []
-  (print "How many rows? [5]")
+  (println "How many rows? [5]")
   (let [rows (Integer. (get-input 5))
         board (new-board rows)]
     (prompt-empty-peg board)))
