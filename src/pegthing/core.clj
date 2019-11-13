@@ -189,3 +189,69 @@
   [board]
   (doseq [row-num (range 1 (inc (:rows board)))]
     (println (render-row board row-num))))
+
+;;
+;; Player Interaction
+;;
+
+(defn letter->pos
+  "Converts a letter string to the corresponding position number"
+  [letter]
+  (inc (- (int (first letter)) alpha-start)))
+
+(defn get-input
+  "Waits for user to enter text and hit enter, then cleans the input"
+  ([] (get-input nil))
+  ([default]
+   (let [input (clojure.string/trim (read-line))]
+     (if (empty? input)
+       default
+       (clojure.string/lower-case input)))))
+
+(defn characters-as-string
+  "Given a string, return a collection consisting of each individual character"
+  [string]
+  (re-seq #"[a-zA-Z]" string))
+
+(defn user-entered-invalid-move
+  "Handles the next step after a user has entered an invalid move"
+  [board]
+  (println "\n!!! This was an invalid move :(\n")
+  (prompt-move board))
+
+(defn user-entered-valid-move
+  "Handles the next step after a user has entered a valid move"
+  [board]
+  (if (can-move? board)
+    (prompt-move board)
+    (game-over board)))
+
+(defn prompt-empty-peg
+  "Ask the position of the initial removed peg"
+  [board]
+  (println "Here's your board:")
+  (print-board board)
+  (println "Remove which peg? [e]")
+  (prompt-move (remove-peg board (letter->pos (get-input "e")))))
+
+(defn prompt-rows
+  "Ask how many rows the new board have"
+  []
+  (print "How many rows? [5]")
+  (let [rows (Integer. (get-input 5))
+        board (new-board rows)]
+    (prompt-empty-peg board)))
+
+(defn game-over
+  "Announce the game is over and prompt to play again"
+  [board]
+  (let [remaining-pegs (count (filter :pegged (vals board)))]
+    (println "Game over! You had " remaining-pegs "pegs left:")
+    (print-board board)
+    (println "Play again? y/n [y]")
+    (let [input (get-input "y")]
+      (if (= "y" input)
+        (prompt-rows)
+        (do
+          (println "Bye!")
+          (System/exit 0))))))
