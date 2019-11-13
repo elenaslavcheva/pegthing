@@ -8,7 +8,7 @@
 ;;
 (defn tri*
   ([] (tri* 0 1))
-  ([sum n] 
+  ([sum n]
    (let [new-sum (+ sum n)]
      (cons new-sum (lazy-seq (tri* new-sum (inc n)))))))
 
@@ -134,7 +134,7 @@
   [board]
   (some (comp not-empty (partial valid-moves board))
         (map first (filter #(get (second %) :pegged) board))))
-  
+
 ;;
 ;; Rendering and Printing the Board
 ;;
